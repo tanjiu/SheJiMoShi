@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 衣服店
+{
+    //抽象类
+    abstract class Close
+    {
+        protected string name;
+        public Close(string name)
+        {
+            this.name = name;
+        }
+        public abstract void Add(Close close);
+        public abstract void Remove(Close close);
+        public abstract void Display(int depth);
+    }
+    //叶子结点
+    class Leaf : Close
+    {
+        public Leaf(string name) : base(name) { }
+        public override void Add(Close close)
+        {
+            Console.WriteLine("not");
+        }
+        public override void Remove(Close close)
+        {
+            Console.WriteLine("not");
+        }
+        public override void Display(int depth)
+        {
+            Console.WriteLine(new String(' ', depth) + "-" + name);
+        }
+    }
+    //枝节点
+    class Composite : Close
+    {
+        private List<Close> children = new List<Close>();
+        public Composite(string name) : base(name) { }
+
+        public override void Add(Close close)
+        {
+            children.Add(close);
+        }
+        public override void Remove(Close close)
+        {
+            children.Remove(close);
+        }
+        public override void Display(int depth)
+        {
+            Console.WriteLine(new String (' ',depth)+"+" + name);
+            foreach (Close colse in children)
+            {
+                colse.Display(depth + 2);
+            }
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Composite root = new Composite("服装");
+            Composite c1 = new Composite("男装");
+            Composite c2 = new Composite("女装");
+            Leaf c3 = new Leaf("夹克");
+            root.Add(c1);
+            c1.Add(c3);
+            root.Add(c2);
+
+            root.Display(1);
+            Console.Read();
+        }
+    }
+}

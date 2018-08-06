@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 小菜装扮
+{
+    class Person
+    {
+        public Person()
+        { }
+        private string name;
+        public Person(string name)
+        {
+            this.name = name;
+        }
+        public virtual void Show()
+        {
+            Console.WriteLine("装扮的{0}", name);
+        }
+    }
+    class Finery : Person
+    {
+        protected Person component;
+        public void Decorate(Person component)
+        {
+            this.component = component;
+        }
+        public override void Show()
+        {
+            if (component != null)
+            {
+                component.Show();
+            }
+        }
+    }
+    class BigTrouser : Finery
+    {
+        public override void Show()
+        {
+            Console.WriteLine("垮裤");
+            base.Show();
+        }
+    }
+    class TShirts : Finery
+    {
+        public override void Show()
+        {
+            Console.WriteLine("大T恤");
+            base.Show();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Person xc = new Person("小菜");
+            BigTrouser kk = new BigTrouser();
+            TShirts dtx = new TShirts();
+
+            kk.Decorate(xc);
+            dtx.Decorate(kk);
+            dtx.Show();
+
+            Console.Read();
+        }
+    }
+}

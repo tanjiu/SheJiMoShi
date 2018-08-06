@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 悔棋
+{
+    //原发器
+    class ChessMan
+    {
+        private string lable;
+        private int x;
+        private int y;
+        public ChessMan(string lable, int x, int y)
+        {
+            this.lable = lable;
+            this.x = x;
+            this.y = y;
+        }
+        public string Lable
+        {
+            get { return lable; }
+            set { lable = value; }
+        }
+        public int XX
+        {
+            get { return x; }
+            set { x = value; }
+        }
+        public int YY
+        {
+            get { return y; }
+            set { y = value; }
+        }
+        //存储状态
+        public StateMemento SaveState()
+        {
+            return (new StateMemento(lable, x, y));
+        }
+        //恢复状态
+        public void RecoveryState(StateMemento memento)
+        {
+            this.lable = memento.Lable;
+            this.x = memento.XX;
+            this.y = memento.YY;
+        }
+        //显示
+        public void Show()
+        {
+            Console.WriteLine(lable + "  " + x + "  " + y);
+        }
+    }
+    //状态存储箱
+    class StateMemento
+    {
+        private string lable;
+        private int x;
+        private int y;
+        public StateMemento(string lable, int x, int y)
+        {
+            this.lable = lable;
+            this.x = x;
+            this.y = y;
+        }
+
+        //标志
+        public string Lable
+        {
+            get { return lable; }
+            set { lable = value; }
+        }
+        //x坐标
+        public int XX
+        {
+            get { return x; }
+            set { x = value; }
+        }
+        //y坐标
+        public int YY
+        {
+            get { return y; }
+            set { y = value; }
+        }
+    }
+    //管理者
+    class Keep
+    {
+        private StateMemento memento;
+        public StateMemento Memento
+        {
+            get { return memento; }
+            set { memento = value; }
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ChessMan cm = new ChessMan("象",2,3);
+            cm.Show();
+
+            Keep k = new Keep();
+            k.Memento = cm.SaveState();
+
+            cm.Lable = "象";
+            cm.XX = 3;
+            cm.YY = 8;
+            cm.Show();
+
+            cm.RecoveryState(k.Memento);
+            cm.Show();
+
+        }
+    }
+}

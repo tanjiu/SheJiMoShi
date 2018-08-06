@@ -1,0 +1,147 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 系统登录类
+{
+    //封装进行登录控制所需要的数据
+    class Model
+    {
+        private String id;
+        private String pwd;
+        public String getId()
+        {
+            return id;
+        }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
+        public String getPwd()
+        {
+            return pwd;
+        }
+        public void setPwd(String pwd)
+        {
+            this.pwd = pwd;
+        }
+    }
+    //  登录控制的模板
+    abstract class AbstractTemplate
+    {
+        public Model lm;
+        public Model aa;
+        public String pwd;
+        public String id;
+
+        public abstract String login(Model lm);
+        public abstract String encryptPwd(String pwd);
+        public abstract Model findUser(String id);
+        public abstract String match(Model lm, Model aa);
+
+        public void DengLu()
+        {
+            login(lm);
+            encryptPwd(pwd);
+            findUser(id);
+            match(lm, aa);
+        }
+    }
+
+    // 普通用户登录控制的逻辑处理
+
+    class NormalLogin : AbstractTemplate
+    {
+        public override String login(Model lm)
+        {
+            Model aa = this.findUser(lm.getId());
+            if (aa != null)
+            {
+                String encryptPwd = this.encryptPwd(lm.getPwd());
+                lm.setPwd(encryptPwd);
+                return this.match(lm, aa);
+            }
+            else { return "不可以"; }
+        }
+        public override String match(Model lm, Model aa)
+        {
+            if (lm.getId() == aa.getId() && lm.getPwd() == aa.getPwd())
+            {
+                return "可以";
+            }
+            else { return "不可以"; }
+        }
+        public override Model findUser(String id)
+        {
+
+            Model lm = new Model();
+            lm.setId(id);
+            lm.setPwd("testpwd");
+            return lm;
+        }
+        public override string encryptPwd(string pwd)
+        {
+            return null;
+
+        }
+    }
+    // 工作人员登录控制的逻辑处理
+    class WorkerLogin : AbstractTemplate
+    {
+        public override String login(Model lm)
+        {
+            Model aa = this.findUser(lm.getId());
+            if (aa != null)
+            {
+                String encryptPwd = this.encryptPwd(lm.getPwd());
+                lm.setPwd(encryptPwd);
+                return this.match(lm, aa);
+            }
+            else { return "不可以"; }
+        }
+        public override String match(Model lm, Model aa)
+        {
+            if (lm.getId() == aa.getId() && lm.getPwd() == aa.getPwd())
+            {
+                return "可以";
+            }
+            else { return "不可以"; }
+        }
+        public override Model findUser(String id)
+        {
+
+            Model lm = new Model();
+            lm.setId(id);
+            lm.setPwd("workerpwd");
+            return lm;
+        }
+        public override string encryptPwd(string pwd)
+        {
+            Console.WriteLine("密码加密");
+            return pwd;
+
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Model lm = new Model();
+            lm.setId("admin");
+            lm.setPwd("workerpwd");
+
+
+            AbstractTemplate lt = new WorkerLogin();
+            AbstractTemplate lt2 = new NormalLogin();
+
+            //进行登录测试
+            String flag1 = lt.login(lm);
+            Console.WriteLine(flag1 + "进行工作人员登录");
+
+            String flag2 = lt2.login(lm);
+            Console.WriteLine(flag2 + "进行普通人员登录");
+        }
+    }
+}

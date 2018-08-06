@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 订单处理系统
+{
+    //订单类
+    abstract class Dingdan 
+    {
+        private string id;
+        private  string name;
+        private int number;
+        public Dingdan()
+        { }
+        public Dingdan(string id, string name,int number)
+        {
+            this.id = id;
+            this.name = name;
+            this.number = number;
+        }
+        public abstract Dingdan Clone();
+    }
+    //客户类
+    class Kehu :Dingdan
+    {
+        public Kehu(string id, string name, int number)
+            : base(id, name, number)
+        {
+            if (number > 1000)
+            {
+                Console.WriteLine("{0},{1},{2}", id, name, 1000);
+                Kehu s = new Kehu(id,name,number-1000);
+                s.Clone();
+            }
+            else
+            {
+                Console.WriteLine("{0},{1},{2}", id, name, number);
+            }
+        }
+
+        public override Dingdan Clone()
+        {
+            return (Dingdan)this.MemberwiseClone();
+        }
+    }
+    //公司类
+    class Company :Dingdan
+    {
+        
+        public Company(string id, string name, int number)
+            : base(id, name, number)
+        {
+            if (number > 1000)
+            {
+                Console.WriteLine("{0},{1},{2}", id, name, 1000);
+                Company s = new Company (id, name, number - 1000);
+                s.Clone();
+            }
+            else
+            {
+                Console.WriteLine("{0},{1},{2}", id, name, number);
+            }
+        }
+        public override Dingdan  Clone()
+        {
+            return (Dingdan)this.MemberwiseClone();
+        }
+    }
+    
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Kehu k1 = new Kehu("123", "张三", 145);
+
+            Company c1 = new Company("456", "李四", 1234);
+        }
+    }
+}

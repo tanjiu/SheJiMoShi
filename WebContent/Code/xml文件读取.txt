@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml;  
+
+namespace xml文件读取
+{
+    class Singleton
+    {
+        XmlDocument doc = new XmlDocument();  
+        private static Singleton p;
+        private Singleton() 
+        {
+            Console.WriteLine("a");
+            Console.WriteLine("b");
+        }
+        public static Singleton GetInstance()
+        {
+            if (p == null)
+            {
+                p = new Singleton();
+            }
+            return p;
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Singleton s1 = Singleton.GetInstance();
+            Singleton s2 = Singleton.GetInstance();
+
+            
+            Console.Read();
+        }
+    }
+}

@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 基金股票
+{
+    //股票1
+    class Stock1
+    {
+        public void Sell()
+        {
+            Console.WriteLine("股票1卖出");
+        }
+        public void Buy()
+        {
+            Console.WriteLine("股票1买进");
+        }
+    }
+    //股票2
+    class Stock2
+    {
+        public void Sell()
+        {
+            Console.WriteLine("股票2卖出");
+        }
+        public void Buy()
+        {
+            Console.WriteLine("股票2买进");
+        }
+    }
+    //股票3
+    class Stock3
+    {
+        public void Sell()
+        {
+            Console.WriteLine("股票3卖出");
+        }
+        public void Buy()
+        {
+            Console.WriteLine("股票3买进");
+        }
+    }
+    //股票4
+    class Stock4
+    {
+        public void Sell()
+        {
+            Console.WriteLine("股票4卖出");
+        }
+        public void Buy()
+        {
+            Console.WriteLine("股票4买进");
+        }
+    }
+    //基金类
+    class Fund
+    {
+        Stock1 gu1;
+        Stock2 gu2;
+        Stock3 gu3;
+        Stock4 gu4;
+        public Fund()
+        {
+            gu1 = new Stock1();
+            gu2 = new Stock2();
+            gu3 = new Stock3();
+            gu4 = new Stock4();
+        }
+        public void BuyFund()
+        {
+            gu1.Buy();
+            gu2.Buy();
+            gu3.Buy();
+            gu4.Buy();
+        }
+        public void SellFund()
+        {
+            gu1.Sell();
+            gu2.Sell();
+            gu3.Sell();
+            gu4.Sell();
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Fund jijin = new Fund();
+            jijin.BuyFund();
+            jijin.SellFund();
+
+            Console.Read();
+        }
+    }
+}

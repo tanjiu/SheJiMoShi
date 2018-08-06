@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 状态模式
+{
+    //State类 抽象状态类
+    abstract class State
+    {
+        public abstract void Handle(Context context);
+    }
+    //ConcreteState类 具体抽象类
+    class ConcreStateA : State
+    {
+        public override void Handle(Context context)
+        {
+            context.State = new ConcreStateB();
+        }
+    }
+    class ConcreStateB : State
+    {
+        public override void Handle(Context context)
+        {
+            context.State = new ConcreStateA();
+        }
+    }
+    //Contex类
+    class Context
+    {
+        private State state;
+        public Context(State state)
+        {
+            this.state = state;
+        }
+
+        public State State
+        {
+            get { return state; }
+            set
+            {
+                state = value;
+                Console.WriteLine("当前状态：" + state.GetType().Name);
+            }
+        }
+
+        public void Request()
+        {
+            state.Handle(this);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Context c = new Context(new ConcreStateA());
+
+            c.Request();
+            c.Request();
+            c.Request();
+            c.Request();
+
+            Console.Read();
+        }
+    }
+}

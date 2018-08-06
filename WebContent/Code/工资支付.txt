@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 工资支付
+{
+    //抽象策略角色
+    abstract class Salary
+    {
+        public abstract void Pay();
+    }
+    //人民币
+    class RMB : Salary
+    {
+        public override void Pay()
+        {
+            Console.WriteLine("人民币支付");
+        }
+    }
+    //美元
+    class Dollar : Salary
+    {
+        public override void Pay()
+        {
+            Console.WriteLine("美元支付");
+        }
+    }
+    //银行卡
+    class Bank : Salary
+    {
+        public override void Pay()
+        {
+            Console.WriteLine("银行卡支付");
+        }
+    }
+    //工资卡
+    class Payroll : Salary
+    {
+        public override void Pay()
+        {
+            Console.WriteLine("工资卡支付");
+        }
+    }
+    //上下文类
+    class Context
+    {
+        Salary salary;
+        public Context(Salary salary)
+        {
+            this.salary = salary;
+        }
+        //上下文接口
+        public void ContextInterface()
+        {
+            salary.Pay();
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Context context;
+            context = new Context(new RMB());
+            context.ContextInterface();
+
+            context = new Context(new Dollar());
+            context.ContextInterface();
+
+            context = new Context(new Bank());
+            context.ContextInterface();
+
+            context = new Context(new Payroll());
+            context.ContextInterface();
+        }
+    }
+}

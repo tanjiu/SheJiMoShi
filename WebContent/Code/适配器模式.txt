@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 适配器模式
+{
+    //target类 用户所期待的类
+    class Target
+    {
+        public virtual void Request()
+        {
+            Console.WriteLine("普通请求！");
+        }
+    }
+    //Adaptee类 第三方类
+    class Adaptee
+    {
+        public void SpecificRequest()
+        {
+            Console.WriteLine("特殊请求！");
+        }
+    }
+    //Adapter类 适配器类
+    class Adapter : Target
+    {
+        private Adaptee adaptee = new Adaptee();
+
+        public override void Request()
+        {
+            adaptee.SpecificRequest();
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Target target = new Adapter();
+            target.Request();
+
+            Console.Read();
+        }
+    }
+}

@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 计算器
+{
+
+    public class Operation
+    {
+        private double numberA = 0;
+        private double numberB = 0;
+        public double NumberA
+        {
+            get { return numberA; }
+            set { numberA = value; }
+        }
+        public double NumberB
+        {
+            get { return numberB; }
+            set { numberB = value; }
+        }
+        public virtual double GetResult()
+        {
+            double result = 0;
+            return result;
+        }
+    }
+    //加法类
+    class OperationAdd : Operation
+    {
+        public override double GetResult()
+        {
+            double result = 0;
+            result = NumberA + NumberB;
+            return result;
+        }
+    }
+    //减法类
+    class OperationSub : Operation
+    {
+        public override double GetResult()
+        {
+            double result = 0;
+            result = NumberA - NumberB;
+            return result;
+        }
+    }
+    //乘法类
+    class OperationMul : Operation
+    {
+        public override double GetResult()
+        {
+            double result = 0;
+            result = NumberA * NumberB;
+            return result;
+        }
+    }
+    //除法类
+    class OperationDiv : Operation
+    {
+        public override double GetResult()
+        {
+            double result = 0;
+            if (NumberB == 0)
+                throw new Exception("除数不能为0");
+            result = NumberA / NumberB;
+            return result;
+        }
+    }
+    public class OperationFactory
+    {
+        public static Operation createOperate(string operate)
+        {
+            Operation oper = null;
+            switch (operate)
+            {
+                case "+":
+                    oper = new OperationAdd(); break;
+                case "-":
+                    oper = new OperationSub(); break;
+                case "*":
+                    oper = new OperationMul(); break;
+                case "/":
+                    oper = new OperationDiv(); break;
+            }
+            return oper;
+        }
+    }
+    interface IFactory
+    {
+        Operation CreateOperation();
+    }
+    class AddFactory : OperationFactory, IFactory
+    {
+
+        public Operation CreateOperation()
+        {
+            return new OperationAdd();
+        }
+    }
+    class SubFactory : OperationFactory, IFactory
+    {
+
+        public Operation CreateOperation()
+        {
+            return new OperationSub();
+        }
+    }
+    class MulFactory : OperationFactory, IFactory
+    {
+
+        public Operation CreateOperation()
+        {
+            return new OperationMul();
+        }
+    }
+    class DivFactory : OperationFactory, IFactory
+    {
+        public Operation CreateOperation()
+        {
+            return new OperationDiv();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IFactory OperFactory = new AddFactory();
+            Operation oper = OperFactory.CreateOperation();
+            oper.NumberA = 1;
+            oper.NumberB = 2;
+            double result = oper.GetResult();
+            Console.WriteLine("{0}", result);
+        }
+    }
+}

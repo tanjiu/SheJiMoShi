@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 投资者与股票
+{
+    //通知者接口
+    interface Subject
+    {
+        void Attach(Observer observer);//增加观察者
+        void Detach(Observer observer);//减少观察者
+        void Notify();//通知
+        string SubjectState//股票状态
+        {
+            get;
+            set;
+        }
+    }
+    //股票类
+    class Stock : Subject
+    {
+        //买股票人列表
+        private IList<Observer> observers = new List<Observer>();
+        private string action;
+        //增加
+        public void Attach(Observer observer)
+        {
+            observers.Add(observer);
+        }
+        //减少
+        public void Detach(Observer observer)
+        {
+            observers.Remove(observer);
+        }
+        //通知
+        public void Notify()
+        {
+            foreach (Observer o in observers)
+                o.Update();
+        }
+        //股票状态
+        public string SubjectState
+        {
+            get { return action; }
+            set { action = value; }
+        }
+
+    }
+    //抽象观察者
+    abstract class Observer
+    {
+        protected string name;
+        protected Subject sub;
+        public Observer(string name, Subject sub)
+        {
+            this.name = name;
+            this.sub = sub;
+        }
+        public abstract void Update();
+    }
+    //买股票的人
+    class StockObserver : Observer
+    {
+        public StockObserver(string name, Subject sub) : base(name, sub) { }
+        public override void Update()
+        {
+            Console.WriteLine("{0}{1}快抛", sub.SubjectState, name);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //股票1
+            Stock g1 = new Stock();
+            //买股票的人
+            StockObserver tongshi1 = new StockObserver("尹丽",g1);
+            StockObserver tongshi2 = new StockObserver("赵薇", g1);
+            g1.Attach(tongshi1);
+            g1.Attach(tongshi2);
+            g1.Detach(tongshi1);
+            //股票异动
+            g1.SubjectState = "股票降价了";
+            //发出通知
+
+            g1.Notify();
+        }
+    }
+}

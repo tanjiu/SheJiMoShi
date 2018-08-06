@@ -1,0 +1,170 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 导出数据
+{
+    //抽象建造者类
+    abstract class Step
+    {
+        private String number;
+        private String data;
+        private String surface;
+        private String name;
+        public String Number
+        {
+            get { return number; }
+            set { number = value; }
+        }
+        public String Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
+        public String Surface
+        {
+            get { return surface; }
+            set { surface = value; }
+        }
+        public String Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public abstract String Head();
+        public abstract String Body();
+        public abstract String Tail();
+        public abstract void Display();
+    }
+    //文本格式类
+    class Txt : Step
+    {
+        public override String Head()
+        {
+            return (Number + "," + Data + "," + "txt");    
+        }
+        public override String Body()
+        {
+            return (Surface + "内容");
+        }
+        public override String Tail()
+        {
+            return( Name);
+        }
+        public override void  Display()
+        {
+            Console.WriteLine(Head()+Body()+Tail());
+        }
+ 	
+    }
+    //数据库备份格式
+    class DataBase : Step
+    {
+        public override String Head()
+        {
+            return (Number + "," + Data + "," + "database");
+        }
+        public override String Body()
+        {
+            return (Surface + "内容");
+        }
+        public override String Tail()
+        {
+            return (Name);
+        }
+        public override void Display()
+        {
+            Console.WriteLine(Head() + Body() + Tail());
+        }
+    }
+    //Excel格式
+    class Excel : Step
+    {
+        public override String Head()
+        {
+            return (Number + "," + Data + "," + "excel");
+        }
+        public override String Body()
+        {
+            return (Surface + "内容");
+        }
+        public override String Tail()
+        {
+            return (Name);
+        }
+        public override void Display()
+        {
+            Console.WriteLine(Head() + Body() + Tail());
+        }
+    }
+    //xml格式
+    class Xml : Step
+    {
+        public override String Head()
+        {
+            return (Number + "," + Data + "," + "xml");
+        }
+        public override String Body()
+        {
+            return (Surface + "内容");
+        }
+        public override String Tail()
+        {
+            return (Name);
+        }
+        public override void Display()
+        {
+            Console.WriteLine(Head() + Body() + Tail());
+        }
+    }
+    //抽象工厂
+    interface IFactory
+    {
+        Step Shuju();   
+    }
+    class TxtFactory :  IFactory
+    {
+
+        public Step Shuju()
+        {
+            return new Txt();
+        }
+    }
+    class DatabaseFactory : IFactory
+    {
+
+        public Step Shuju()
+        {
+            return new DataBase();
+        }
+    }
+    class ExcelFactory :  IFactory
+    {
+
+        public Step Shuju()
+        {
+            return new Excel();
+        }
+    }
+    class xmlFactory :  IFactory
+    {
+        public Step Shuju()
+        {
+            return new Xml();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IFactory SFactory = new TxtFactory();
+            Step s = SFactory.Shuju();
+            s.Name = "赵薇";
+            s.Number = "111";
+            s.Surface = "关于大学生学习";
+            s.Data = "1996年11月10号";
+            s.Display();
+        }
+    }
+}

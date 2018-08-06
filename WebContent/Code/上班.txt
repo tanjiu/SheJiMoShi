@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 上班
+{
+    //通知者接口
+    interface Subject
+    {
+        void Attach(Observer observer);//增加观察者
+        void Detach(Observer observer);//减少观察者
+        void Notify();//通知
+        string SubjectState//老板状态
+        {
+            get;
+            set;
+        }
+    }
+    //老板类
+    class Boss : Subject
+    {
+        //同事列表
+        private IList<Observer> observers = new List<Observer>();
+        private string action;
+        //增加
+        public void Attach(Observer observer)
+        {
+            observers.Add(observer);
+        }
+        //减少
+        public void Detach(Observer observer)
+        {
+            observers.Remove(observer);
+        }
+        //通知
+        public void Notify()
+        {
+            foreach (Observer o in observers)
+                o.Update();
+        }
+        //老板状态
+        public string SubjectState
+        {
+            get { return action; }
+            set { action = value; }
+        }
+
+    }
+    //抽象观察者
+    abstract class Observer
+    {
+        protected string name;
+        protected Subject sub;
+        public Observer(string name, Subject sub)
+        {
+            this.name = name;
+            this.sub = sub;
+        }
+        public abstract void Update();
+    }
+    //看股票的同事
+    class StockObserver : Observer
+    {
+        public StockObserver(string name, Subject sub) : base(name, sub) { }
+        public override void Update()
+        {
+            Console.WriteLine("{0}{1}关闭股票，继续工作", sub.SubjectState, name);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //老板胡汉三
+            Boss huhansan = new Boss();
+            //看股票的同事
+            StockObserver tongshi1 = new StockObserver("尹丽", huhansan);
+            StockObserver tongshi2 = new StockObserver("赵薇", huhansan);
+            huhansan.Attach(tongshi1);
+            huhansan.Attach(tongshi2);
+            huhansan.Detach(tongshi1);
+            //老板回来
+            huhansan.SubjectState = "我胡汉三回来了";
+            //发出通知
+
+            huhansan.Notify();
+        }
+    }
+}

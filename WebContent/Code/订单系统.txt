@@ -1,0 +1,108 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 订单系统
+{
+    interface OrderApi
+    {
+        String getProductName();
+        String getOrderUser();
+        int getOrderNum();
+    }
+    public class Order : OrderApi
+    {
+        private String productName;
+        private int orderNum;
+        private String orderUser;
+        public Order(String productName, int orderNum, String orderUser)
+        {
+            this.productName = productName;
+            this.orderNum = orderNum;
+            this.orderUser = orderUser;
+        }
+
+        internal OrderApi OrderApi
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+        //构造函数
+        public int getOrderNum()
+        {
+            return orderNum;
+        }
+        public String getOrderUser()
+        {
+            return orderUser;
+        }
+        public String getProductName()
+        {
+            return productName;
+        }
+        public void setOrderNum(int orderNum, String user)
+        {
+            this.orderNum = orderNum;
+        }
+        public void setOrderUser(String orderUser, String user)
+        {
+            this.orderUser = orderUser;
+        }
+        public void setProductName(String productName, String user)
+        {
+            this.productName = productName;
+        }
+        //真实类的关系
+    }
+    public class OrderProxy : OrderApi
+    {
+        Order order;
+        public OrderProxy()
+        {
+            order = new Order("mm", 16, "nn");
+        }
+
+        internal OrderApi OrderApi
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public int getOrderNum()
+        {
+            Console.WriteLine(this.order.getOrderNum());
+            return this.order.getOrderNum();
+        }
+        public String getOrderUser()
+        {
+            Console.WriteLine(this.order.getOrderUser());
+            return this.order.getOrderUser();
+        }
+        public String getProductName()
+        {
+            Console.WriteLine(this.order.getProductName());
+            return this.order.getProductName();
+        }
+    }//代理类
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            OrderProxy yy = new OrderProxy();
+            yy.getOrderNum();
+            yy.getOrderUser();
+            yy.getProductName();
+        }
+    }
+}

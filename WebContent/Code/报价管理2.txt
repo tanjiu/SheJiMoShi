@@ -1,0 +1,53 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 报价管理
+{
+       public interface OfferSuper {
+	      double offerCash(double money);
+          }
+       public class OfferLargeCus : OfferSuper {
+
+	       public double offerCash(double money) {
+		// TODO Auto-generated method stub
+		Console.WriteLine("对于大客户，统一折扣10%");
+		return money*0.9;
+	      }
+     }
+       public class OfferNormal : OfferSuper {
+
+	public double offerCash(double money) {
+		Console.WriteLine("对于新客户或者是普通客户，没有折扣");  
+		return money;
+	}
+
+}
+public class OfferOldCus : OfferSuper{
+
+	public double offerCash(double money) {
+		// TODO Auto-generated method stub
+		Console.WriteLine("对于老客户，统一折扣5%");  
+		return money*0.095;
+	}
+}
+public class Custom {
+	private OfferSuper os;
+	public Custom(OfferSuper offersuper){
+		this.os = offersuper;
+	}
+	public double GetResult(double money){
+		return os.offerCash(money);
+	}
+}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            OfferLargeCus olc = new OfferLargeCus();//创建一个老客户的报价策略
+		    Custom cus = new Custom(olc);//把上面的报价策略传入到custom中
+		    Console.WriteLine(cus.GetResult(1000));
+        }
+    }
+}

@@ -1,0 +1,141 @@
+﻿    /// <summary>
+    /// 银行帐号
+    /// </summary>
+    public class Account
+    {
+        /// <summary>
+        /// 帐号总金额
+        /// </summary>
+        private decimal totalAmount { get; set; }
+
+        /// <summary>
+        /// 存钱
+        /// </summary>
+        /// <param name="amount"></param>
+        public void MoneyIn(decimal amount)
+        {
+            this.totalAmount += amount;
+        }
+
+        /// <summary>
+        /// 取钱
+        /// </summary>
+        /// <param name="amount"></param>
+        public void MoneyOut(decimal amount)
+        {
+            this.totalAmount -= amount;
+        }
+
+        public decimal GetTotalAmout()
+        {
+            return totalAmount;
+        }
+    }
+
+    public abstract class Command
+    {
+        protected Account account;
+
+        public Command(Account account)
+        {
+            this.account = account;
+        }
+
+        public abstract void Execute();
+    }
+
+    /// <summary>
+    /// 存款命令
+    /// </summary>
+    public class MoneyInCommand : Command
+    {
+        private decimal amount;
+
+        public MoneyInCommand(Account account, decimal amount)
+            : base(account)
+        {
+            this.amount = amount;
+        }
+
+        /// <summary>
+        /// 实现存钱命令
+        /// </summary>
+        public override void Execute()
+        {
+            account.MoneyIn(amount);
+        }
+    }
+
+    /// <summary>
+    /// 取款命令类
+    /// </summary>
+    public class MoneyOutCommand : Command
+    {
+        private decimal amount;
+        public MoneyOutCommand(Account account, decimal amount)
+            : base(account)
+        {
+            this.amount = amount;
+        }
+
+        /// <summary>
+        /// 实现取钱命令
+        /// </summary>
+        public override void Execute()
+        {
+            account.MoneyOut(amount);
+        }
+    }
+
+    public class Invoker
+    {
+        private Command command;
+
+        public void SetCommand(Command command)
+        {
+            this.command = command;
+        }
+
+        public void ExecuteCommand()
+        {
+            command.Execute();
+        }
+    }
+
+
+
+ 客户端代码
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // 创建银行帐号
+            Account account = new Account();
+            // 创建一个存入500元的命令
+            Command commandIn = new MoneyInCommand(account,500);
+            // 创建一个调度者
+            BankAccount.Invoker invoker = new BankAccount.Invoker();
+
+            // 设置存钱命令
+            invoker.SetCommand(commandIn);
+            // 执行
+            invoker.ExecuteCommand();
+            Console.WriteLine("The current amount is " + account.GetTotalAmout().ToString("N2"));
+
+            // 再次存入500
+            Command commandIn2 = new MoneyInCommand(account, 500);
+            invoker.SetCommand(commandIn2);
+            invoker.ExecuteCommand();
+            Console.WriteLine("The current amount is " + account.GetTotalAmout().ToString("N2"));
+
+            // 取出300
+            Command commandOut = new MoneyOutCommand(account, 300);
+            invoker.SetCommand(commandOut);
+            invoker.ExecuteCommand();
+            Console.WriteLine("The current amount is " + account.GetTotalAmout().ToString("N2"));
+
+            Console.Read();
+        }
+    }

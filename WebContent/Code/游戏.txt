@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 游戏
+{
+    //游戏角色
+    class Game
+    {
+        private int vit;//生命力
+        private int atk;//攻击力
+        private int def;//防御力
+
+        public int Vitality
+        {
+            get { return vit; }
+            set { vit = value; }
+        }
+        public int Attack
+        {
+            get { return atk; }
+            set { atk = value; }
+        }
+        public int Defense
+        {
+            get { return def; }
+            set { def = value; }
+        }
+
+        //保存角色状态
+        public RoleStateMemento SaveState()
+        {
+            return (new RoleStateMemento(vit, atk, def));
+        }
+        //恢复角色状态
+        public void RecoveryState(RoleStateMemento memento)
+        {
+            this.vit = memento.Vitality;
+            this.atk = memento.Attack;
+            this.def = memento.Defense;
+        }
+        //初始值
+        public void GetInitState()
+        {
+            vit = 100;
+            atk = 100;
+            def = 100;
+        }
+        //显示
+        public void Show()
+        {
+            Console.WriteLine("生命力=" + vit+"  "+"攻击力="+atk+"   "+"防御力="+def);
+        }
+        //大战Boss
+        public void Fight()
+        {
+            vit = 50;
+            atk = 20;
+            def = 40;
+        }
+    }
+    //角色状态存储箱
+    class RoleStateMemento
+    {
+        private int vit;//生命力
+        private int atk;//攻击力
+        private int def;//防御力
+
+        public RoleStateMemento(int vit, int atk, int def)
+        {
+            this.vit = vit;
+            this.atk = atk;
+            this.def = def;
+        }
+
+        public int Vitality
+        {
+            get { return vit; }
+            set { vit = value; }
+        }
+        public int Attack
+        {
+            get { return atk; }
+            set { atk = value; }
+        }
+        public int Defense
+        {
+            get { return def; }
+            set { def = value; }
+        }
+    }
+    //角色状态管理者类
+    class RoleStateCaretaker
+    {
+        private RoleStateMemento memento;
+        public RoleStateMemento Memento
+        {
+            get { return memento; }
+            set { memento = value; }
+        }
+    }
+    //客户端
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //大战Boss前
+            Game kk = new Game();
+            kk.GetInitState();
+            kk.Show();
+
+            //保存进度
+            RoleStateCaretaker stateAdmin = new RoleStateCaretaker();
+            stateAdmin.Memento = kk.SaveState();
+
+            //大战Boss时，损耗严重
+            kk.Fight();
+            kk.Show();
+
+            //恢复
+            kk.RecoveryState(stateAdmin.Memento);
+            kk.Show();
+
+            Console.Read();
+        }
+    }
+}

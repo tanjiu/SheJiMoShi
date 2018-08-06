@@ -1,0 +1,100 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 请假工作流
+{
+    //抽象状态类
+    abstract class State
+    {
+        public abstract void Handle(Leave leave);
+    }
+    //具体状态类
+    //项目经理类
+    class ProjectManager : State
+    {
+        public override void Handle(Leave leave)
+        {
+            if (leave.LeaveAgree == false)
+            {
+                Console.WriteLine("请假不符合条件，我项目经理不准假");
+            }
+            else
+            {
+                if (leave.Time < 3)
+                {
+                    Console.WriteLine("我项目经理准了");
+                }
+                else
+                {
+                    leave.SetState(new DivisionManager());
+                    leave.Request();
+                }
+            }
+        }
+    }
+    //部门经理类
+    class DivisionManager : State
+    {
+        public override void Handle(Leave leave)
+        {
+            if (leave.LeaveAgree == false)
+            {
+                Console.WriteLine("请假不符合条件，我部门经理不准假");
+            }
+            else
+            {
+                Console.WriteLine("我部门经理准了");
+            }
+        }
+    }
+    //请假类
+    class Leave
+    {
+        private State state;
+        public Leave(State state)
+        {
+            this.state = state;
+        }
+
+        public State State
+        {
+            get { return state; }
+            set { state = value; }
+        }
+
+        private bool agree = false;
+        public bool LeaveAgree
+        {
+            get { return agree; }
+            set { agree = value; }
+        }
+
+        private int time;
+        public int Time
+        {
+            get { return time; }
+            set { time = value; }
+        }
+
+        public void SetState(State s)
+        {
+            state = s;
+        }
+        public void Request()
+        {
+            state.Handle(this);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Leave l = new Leave(new ProjectManager());
+            l.Time = 4;
+            l.LeaveAgree = true;
+            l.Request();
+        }
+    }
+}

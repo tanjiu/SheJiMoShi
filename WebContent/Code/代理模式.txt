@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 代理模式
+{
+    abstract class Subject
+    {
+        public abstract void Request();
+    }
+    class RealSubject : Subject
+    {
+        public override void Request()
+        {
+            Console.WriteLine("真实的请求");
+        }
+    }
+    class Proxy : Subject
+    {
+        RealSubject realsubject;
+        public override void Request()
+        {
+            if (realsubject == null)
+            {
+                realsubject = new RealSubject();
+            }
+            realsubject.Request();
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Proxy proxy = new Proxy();
+            proxy.Request();
+
+            Console.Read();
+        }
+    }
+}

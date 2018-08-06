@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 外观模式
+{
+    class SubSystemone
+    {
+        public void MethodOne()
+        {
+            Console.WriteLine("子系统方法一");
+        }
+    }
+    class SubSystemtwo
+    {
+        public void Methodtwo()
+        {
+            Console.WriteLine("子系统方法二");
+        }
+    }
+    class SubSystemthree
+    {
+        public void Methodthree()
+        {
+            Console.WriteLine("子系统方法三");
+        }
+    }
+    class SubSystemfour
+    {
+        public void Methodfour()
+        {
+            Console.WriteLine("子系统方法四");
+        }
+    }
+    //外观类
+    class Facade
+    {
+        SubSystemone one;
+        SubSystemtwo two;
+        SubSystemthree three;
+        SubSystemfour four;
+
+        public Facade()
+        {
+            one = new SubSystemone();
+            two = new SubSystemtwo();
+            three = new SubSystemthree();
+            four = new SubSystemfour();
+        }
+        public void MethodA()
+        {
+            Console.WriteLine("方法组A");
+            one.MethodOne();
+            two.Methodtwo();
+            three.Methodthree();
+            four.Methodfour();
+        }
+        public void MethodB()
+        {
+            Console.WriteLine("方法组B");
+            two.Methodtwo();
+            three.Methodthree();
+            four.Methodfour();
+        }
+    }
+    //客户端类
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Facade facade = new Facade();
+
+            facade.MethodA();
+            facade.MethodB();
+
+            Console.Read();
+        }
+    }
+}

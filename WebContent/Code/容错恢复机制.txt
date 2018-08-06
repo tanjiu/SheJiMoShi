@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace 容错恢复机制
+{
+    abstract class  LogStrategy 
+    {
+           public abstract  void log(String msg);
+    }
+    //数据库
+     class DbLog : LogStrategy 
+    {
+       public override  void log(String msg) 
+       {
+             // 制造错误2w
+         if(msg!=null)
+          {
+             int a=5/2;
+          }
+      Console.WriteLine("现在把"+msg+"记录到数据库中");
+       }
+    }
+    //文件
+     class FileLog :LogStrategy 
+     {
+         public override  void log(String msg) 
+         {
+         Console.WriteLine("现在把"+msg+"记录到文件中");
+         }
+      }
+     class LogContext 
+     {   
+         public void log(String msg)
+         {
+           LogStrategy strategy=new DbLog();
+       try {
+             strategy.log(msg);
+           } catch (Exception e) {
+           strategy=new FileLog();
+           strategy.log(msg);
+           }
+           }
+}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            LogContext log=new LogContext();
+               log.log("记录日志");
+               log.log("再次记录日志");
+        }
+    }
+}

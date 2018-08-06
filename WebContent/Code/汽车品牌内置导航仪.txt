@@ -1,0 +1,147 @@
+汽车品牌有两个：宝马、奔驰。
+
+导航仪有三个牌子：神行者、北斗、高德。
+
+
+    package com.bridge;  
+      
+    /**  
+     * 1：汽车品牌抽象类，这个抽象类主要是导航的安装与启动，其它的配件也可以在该类提供方法，  
+     * 但是为了开-闭原则，最好可以在另加其它接口。  
+     * 2：桥接就是要实现插拔方式的调用，我们想一下主板和插件，主板提供接口定义该接口的功能，  
+     * 由插件来实现该接口的功能。这就是桥接的主要思想，抽象与实现分离。  
+     * 3：该类定义了如何注入一个接口的方法install，并定义了如何操作注入接口的具体实现的方法open。  
+     * 4：这里其实可以使用接口，如果使用接口，那就更灵活，以后我再给大家写一个多个接口的例子  
+     * ，每个配件一个接口。这样每个品牌的汽车可以实现多个接口也就可以增加不同的配件了。  
+     * @author gaoxu  
+     * 实践出真知！  
+     */  
+    public abstract class AbstractVehicleBrand {  
+        /**安装导航方法  
+         * @author gaoxu  
+         * @param n  
+         */  
+        public abstract void install(INavigator n);  
+          
+        /**开启导航  
+         * 开启导航是调用导航接口实现类的方法，其实那个方法就是我们这个方法的延伸。  
+         * @author gaoxu  
+         */  
+        public abstract void open();  
+    }</span>  
+
+
+[html] view plain copy
+
+    <span style="font-size:14px;">package com.bridge;  
+      
+    /**  
+     * @author gaoxu  
+     * 实践出真知！  
+     */  
+    public class BMWVehicle extends AbstractVehicleBrand{  
+        //导航  
+        INavigator navigator = null;  
+      
+        @Override  
+        public void install(INavigator n) {  
+              
+            navigator = n;  
+        }  
+      
+        @Override  
+        public void open() {  
+            navigator.work();  
+        }  
+      
+    }  
+
+
+[html] view plain copy
+
+    package com.bridge;  
+      
+    /**  
+     * @author gaoxu  
+     * 实践出真知！  
+     */  
+    public class BenzVehicle extends AbstractVehicleBrand{  
+        //导航  
+        INavigator navigator = null;  
+        @Override  
+        public void install(INavigator n) {  
+            navigator = n;  
+        }  
+      
+        @Override  
+        public void open() {  
+            navigator.work();     
+        }  
+      
+    }  
+
+导航插件的公共接口，定义了导航的行为方法。
+[html] view plain copy
+
+    package com.bridge;  
+      
+    /**  
+     * @author gaoxu  
+     * 实践出真知！  
+     */  
+    public interface INavigator {  
+        public void work();  
+    }  
+
+[html] view plain copy
+
+    package com.bridge;  
+      
+    public class SXZNavigator implements INavigator{  
+      
+        @Override  
+        public void work() {  
+            System.out.println("我是神行者导航！");  
+        }  
+      
+    }  
+
+
+[html] view plain copy
+
+    package com.bridge;  
+      
+    public class BDNavigator implements INavigator{  
+      
+        @Override  
+        public void work() {  
+            System.out.println("我是北斗导航！");  
+        }  
+    }  
+
+
+我们来看客户端代码
+
+[html] view plain copy
+
+    package com.bridge;  
+      
+    public class Client {  
+        public static void main(String[] para){  
+            //我们现在是实现不同品牌的汽车，可以安装不同牌子的导航，也就是把汽车和导航聚合了起来。  
+            //我们是通过桥接的方式完成了这种聚合，桥接方式比继承的方式要更灵活，它是汽车与配件可  
+                      以独立各自的发展。  
+            //我们可以实现的聚合关系：宝马+北斗，宝马+神行者，奔驰+北斗，奔驰+身形者  
+            //当然我们还可以给汽车配置更多不同的后装配件例如：空气净化器等。  
+            INavigator bdNavigator = new BDNavigator();  
+            INavigator sxzNavigator = new SXZNavigator();  
+            //宝马安装北斗导航  
+            AbstractVehicleBrand bmw = new BMWVehicle();  
+            bmw.install(bdNavigator);  
+            bmw.open();  
+            //奔驰安装了神行者导航  
+            AbstractVehicleBrand benz = new BMWVehicle();  
+            benz.install(sxzNavigator);  
+            benz.open();  
+        }  
+    }  

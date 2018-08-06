@@ -1,0 +1,179 @@
+@CHARSET "UTF-8";
+.top2{
+	background-image: url(../images/bg.jpg);
+	background-repeat: repeat;
+	margin: 0px;
+	padding: 0px;
+	font-family: "微软雅黑", "宋体";
+	font-size: 15px;
+	color: #CCCCCC;
+	float:left;
+}
+.cls {
+	clear: both;
+}
+a:focus { outline: none; }
+.menua {
+	height: 40px;
+	display: block;
+	padding: 0px;
+	width: 1000px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 40px;
+	margin-left: auto;
+}
+
+.menua ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+}
+
+.menua ul li {
+	/* width and height of the menu items */  
+			float: left;
+	overflow: hidden;
+	position: relative;
+	line-height: 40px;
+	text-align: center;
+}
+
+.menua ul li a {
+			/* must be postioned relative  */ 
+			position: relative;
+			display: block;
+			width: 90px;
+			height: 40px;
+			font-family: "微软雅黑", "宋体";
+			font-size: 15px;
+			text-decoration: none;
+			cursor: pointer;
+}
+
+.menua ul li a span {
+			/* all layers will be absolute positioned */
+			position: absolute;
+			left: 0;
+			width: 90px;
+}
+
+		.menu ul li a span.out {
+			top: 0px;
+}
+
+		.menu ul li a span.over,
+		.menu ul li a span.bg {
+			/* hide */  
+			top: -40px;
+}
+
+		/** 1st example **/
+
+#menu1 {
+	background-color: #E8E8E8;
+	background-image: url(../images/menu_bg.gif);
+	background-repeat: repeat-x;
+	background-position: 0px 0px;
+}
+
+#menu1 ul li a {
+			color: #000;
+}
+
+#menu1 ul li a span.over {
+			color: #FFF;
+}
+
+#menu1 ul li span.bg {
+	/* height of the menu items */  
+			height: 40px;
+	background-image: url(../images/bg_over.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.button {
+	float: left;
+	min-width: 150px;
+	max-width: 250px;
+	display: block;
+	margin: 1em;
+	padding: 1em 2em;
+	border: none;
+	background: none;
+	color: inherit;
+	vertical-align: middle;
+	position: relative;
+	z-index: 1;
+	-webkit-backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+}
+.button:focus {
+	outline: none;
+}
+.button > span {
+	vertical-align: middle;
+}
+.button--winona {
+	overflow: hidden;
+	padding: 0;
+	-webkit-transition: border-color 0.3s, background-color 0.3s;
+	transition: border-color 0.3s, background-color 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.button--winona::after {
+	content: attr(data-text);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	color: #3f51b5;
+	-webkit-transform: translate3d(0, 25%, 0);
+	transform: translate3d(0, 25%, 0);
+	
+}
+.button--winona > span {
+	display: block;
+}
+.button--winona.button--inverted {
+	color: #7986cb;
+}
+.button--winona.button--inverted:after {
+	color: #fff;
+}
+.button--winona::after,
+.button--winona > span {
+	padding: 1em 2em;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	
+}
+.button--winona:hover {
+	border-color: #3f51b5;
+	background-color: rgba(63, 81, 181, 0.1);
+}
+.button--winona.button--inverted:hover {
+	border-color: #21333C;
+	background-color: #21333C;
+}
+.button--winona:hover::after {
+	opacity: 1;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+.button--winona:hover > span {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -25%, 0);
+	transform: translate3d(0, -25%, 0);
+}
+.button--border-thin {
+	border: 1px solid;
+}
+.button--round-s {
+	border-radius: 5px;
+}
